@@ -1,0 +1,53 @@
+.KtpField {
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1.5rem;
+  background-color: #fff;
+  /*box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+  border-radius: 8px;*/
+}
+
+.KtpField h4 {
+  font-weight: normal;
+  margin-top: 3rem;
+  color: orange;
+}
+
+.KtpField ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.KtpField li {
+  list-style: none;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.KtpField li > * {
+  padding-left: .75rem;
+  padding-right: .75rem;
+}
+
+
+.KtpField_header {
+  text-align: center;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 3rem;
+}
+
+.KtpField_action {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.KtpField_action button {
+  margin-left: .5rem;
+  height: 32px;
+  width: 80px;
+  border: none;
+
+}
