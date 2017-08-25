@@ -5,8 +5,9 @@ import gstyle from '../_style';
 
 // Import Components
 import TextInput from '../TextInput';
-import MaskInput from '../MaskInput';
+// import MaskInput from '../MaskInput';
 import DropDown from '../DropDown';
+
 export default class KtpField extends Component {
   constructor(props) {
     super(props);
