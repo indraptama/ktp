@@ -4,6 +4,8 @@ import gstyle from '../../components/_style';
 import KtpField from '../../components/KtpField';
 import KtpResult from '../../components/KtpResult';
 import UserPill from '../../components/UserPill';
+import UserCard from '../../components/UserCard';
+
 
 export default class Home extends Component {
 	constructor(props) {
@@ -42,7 +44,7 @@ export default class Home extends Component {
 				<div className={gstyle.flex}>
 					<div className={[gstyle.w_50, style.Compasitor].join(' ')}>
             <UserPill gender={"female"} fullName="indra pratama putra" nik="12345678912345" onClick={console.log('hallo')}/>
-            <KtpField saveData={this.handleSaveData} />
+						<UserCard gender={"male"} fullName="Tn. indra pratama putra" nik="12345678912345" onClick={console.log('hallo')}/>
 					</div>
 
 					<div className={[gstyle.w_50, style.ResultPaper].join(' ')}>

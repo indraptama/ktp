@@ -1,0 +1,38 @@
+.UserCard {
+  color: #fff;
+  max-width: 160px;
+  border-radius: 2px;
+  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+}
+
+.UserCard_img {
+  background-color: #fff;
+  width: 160px;
+  height: 160px;
+  overflow: hidden;
+}
+
+
+
+.UserCard_desc {
+  padding: .5rem;
+}
+
+.UserCard h6 {
+  margin: 0;
+  font-size: 12px;
+  text-transform: capitalize;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+}
+
+.UserCard span {
+  margin: 0;
+  font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+}
