@@ -77,6 +77,9 @@ export default class KtpField extends Component {
   render() {
     return (
       <div className={style.KtpField}>
+        <header className={style.KtpField_header}>
+          Isilah data berikut sesuai dengan Kartu Identitas Penghadap
+        </header>
         <form>
           <ul>
             <li><h4>Informasi Pribadi</h4></li>
