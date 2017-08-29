@@ -1784,11 +1784,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var _ref = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_2__header__["a" /* default */], null);
 
-var _ref2 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_3__routes_home__["a" /* default */], { path: '/' });
+var _ref2 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_3__routes_home__["a" /* default */], { path: '/ktp/' });
 
-var _ref3 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_4__routes_profile__["a" /* default */], { path: '/profile/', user: 'me' });
+var _ref3 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_4__routes_profile__["a" /* default */], { path: '/ktp/profile/', user: 'me' });
 
-var _ref4 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_4__routes_profile__["a" /* default */], { path: '/profile/:user' });
+var _ref4 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_4__routes_profile__["a" /* default */], { path: '/ktp/profile/:user' });
 
 var App = function (_Component) {
 	_inherits(App, _Component);
@@ -1947,17 +1947,17 @@ var Header = function (_Component) {
 				null,
 				__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
 					__WEBPACK_IMPORTED_MODULE_1_preact_router_match__["Link"],
-					{ activeClassName: __WEBPACK_IMPORTED_MODULE_2__style___default.a.active, href: '/' },
+					{ activeClassName: __WEBPACK_IMPORTED_MODULE_2__style___default.a.active, href: '/ktp' },
 					'Home'
 				),
 				__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
 					__WEBPACK_IMPORTED_MODULE_1_preact_router_match__["Link"],
-					{ activeClassName: __WEBPACK_IMPORTED_MODULE_2__style___default.a.active, href: '/profile' },
+					{ activeClassName: __WEBPACK_IMPORTED_MODULE_2__style___default.a.active, href: '/ktp/profile' },
 					'Me'
 				),
 				__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
 					__WEBPACK_IMPORTED_MODULE_1_preact_router_match__["Link"],
-					{ activeClassName: __WEBPACK_IMPORTED_MODULE_2__style___default.a.active, href: '/profile/john' },
+					{ activeClassName: __WEBPACK_IMPORTED_MODULE_2__style___default.a.active, href: '/ktp/profile/john' },
 					'John'
 				)
 			)
