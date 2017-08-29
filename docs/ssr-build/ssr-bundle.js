@@ -69,392 +69,6 @@ module.exports =
 /************************************************************************/
 /******/ ({
 
-/***/ "/QC5":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "subscribers", function() { return subscribers; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getCurrentUrl", function() { return getCurrentUrl; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "route", function() { return route; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Router", function() { return Router; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Route", function() { return Route; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Link", function() { return Link; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_preact__ = __webpack_require__("KM04");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_preact___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_preact__);
-
-
-var EMPTY$1 = {};
-
-function assign(obj, props) {
-	// eslint-disable-next-line guard-for-in
-	for (var i in props) {
-		obj[i] = props[i];
-	}
-	return obj;
-}
-
-function exec(url, route, opts) {
-	if (opts === void 0) opts = EMPTY$1;
-
-	var reg = /(?:\?([^#]*))?(#.*)?$/,
-	    c = url.match(reg),
-	    matches = {},
-	    ret;
-	if (c && c[1]) {
-		var p = c[1].split('&');
-		for (var i = 0; i < p.length; i++) {
-			var r = p[i].split('=');
-			matches[decodeURIComponent(r[0])] = decodeURIComponent(r.slice(1).join('='));
-		}
-	}
-	url = segmentize(url.replace(reg, ''));
-	route = segmentize(route || '');
-	var max = Math.max(url.length, route.length);
-	for (var i$1 = 0; i$1 < max; i$1++) {
-		if (route[i$1] && route[i$1].charAt(0) === ':') {
-			var param = route[i$1].replace(/(^\:|[+*?]+$)/g, ''),
-			    flags = (route[i$1].match(/[+*?]+$/) || EMPTY$1)[0] || '',
-			    plus = ~flags.indexOf('+'),
-			    star = ~flags.indexOf('*'),
-			    val = url[i$1] || '';
-			if (!val && !star && (flags.indexOf('?') < 0 || plus)) {
-				ret = false;
-				break;
-			}
-			matches[param] = decodeURIComponent(val);
-			if (plus || star) {
-				matches[param] = url.slice(i$1).map(decodeURIComponent).join('/');
-				break;
-			}
-		} else if (route[i$1] !== url[i$1]) {
-			ret = false;
-			break;
-		}
-	}
-	if (opts.default !== true && ret === false) {
-		return false;
-	}
-	return matches;
-}
-
-function pathRankSort(a, b) {
-	var aAttr = a.attributes || EMPTY$1,
-	    bAttr = b.attributes || EMPTY$1;
-	if (aAttr.default) {
-		return 1;
-	}
-	if (bAttr.default) {
-		return -1;
-	}
-	var diff = rank(aAttr.path) - rank(bAttr.path);
-	return diff || aAttr.path.length - bAttr.path.length;
-}
-
-function segmentize(url) {
-	return strip(url).split('/');
-}
-
-function rank(url) {
-	return (strip(url).match(/\/+/g) || '').length;
-}
-
-function strip(url) {
-	return url.replace(/(^\/+|\/+$)/g, '');
-}
-
-var customHistory = null;
-
-var ROUTERS = [];
-
-var subscribers = [];
-
-var EMPTY = {};
-
-function isPreactElement(node) {
-	return node.__preactattr_ != null || typeof Symbol !== 'undefined' && node[Symbol.for('preactattr')] != null;
-}
-
-function setUrl(url, type) {
-	if (type === void 0) type = 'push';
-
-	if (customHistory && customHistory[type]) {
-		customHistory[type](url);
-	} else if (typeof history !== 'undefined' && history[type + 'State']) {
-		history[type + 'State'](null, null, url);
-	}
-}
-
-function getCurrentUrl() {
-	var url;
-	if (customHistory && customHistory.location) {
-		url = customHistory.location;
-	} else if (customHistory && customHistory.getCurrentLocation) {
-		url = customHistory.getCurrentLocation();
-	} else {
-		url = typeof location !== 'undefined' ? location : EMPTY;
-	}
-	return "" + (url.pathname || '') + (url.search || '');
-}
-
-function route(url, replace) {
-	if (replace === void 0) replace = false;
-
-	if (typeof url !== 'string' && url.url) {
-		replace = url.replace;
-		url = url.url;
-	}
-
-	// only push URL into history if we can handle it
-	if (canRoute(url)) {
-		setUrl(url, replace ? 'replace' : 'push');
-	}
-
-	return routeTo(url);
-}
-
-/** Check if the given URL can be handled by any router instances. */
-function canRoute(url) {
-	for (var i = ROUTERS.length; i--;) {
-		if (ROUTERS[i].canRoute(url)) {
-			return true;
-		}
-	}
-	return false;
-}
-
-/** Tell all router instances to handle the given URL.  */
-function routeTo(url) {
-	var didRoute = false;
-	for (var i = 0; i < ROUTERS.length; i++) {
-		if (ROUTERS[i].routeTo(url) === true) {
-			didRoute = true;
-		}
-	}
-	for (var i$1 = subscribers.length; i$1--;) {
-		subscribers[i$1](url);
-	}
-	return didRoute;
-}
-
-function routeFromLink(node) {
-	// only valid elements
-	if (!node || !node.getAttribute) {
-		return;
-	}
-
-	var href = node.getAttribute('href'),
-	    target = node.getAttribute('target');
-
-	// ignore links with targets and non-path URLs
-	if (!href || !href.match(/^\//g) || target && !target.match(/^_?self$/i)) {
-		return;
-	}
-
-	// attempt to route, if no match simply cede control to browser
-	return route(href);
-}
-
-function handleLinkClick(e) {
-	if (e.button == 0) {
-		routeFromLink(e.currentTarget || e.target || this);
-		return prevent(e);
-	}
-}
-
-function prevent(e) {
-	if (e) {
-		if (e.stopImmediatePropagation) {
-			e.stopImmediatePropagation();
-		}
-		if (e.stopPropagation) {
-			e.stopPropagation();
-		}
-		e.preventDefault();
-	}
-	return false;
-}
-
-function delegateLinkHandler(e) {
-	// ignore events the browser takes care of already:
-	if (e.ctrlKey || e.metaKey || e.altKey || e.shiftKey || e.button !== 0) {
-		return;
-	}
-
-	var t = e.target;
-	do {
-		if (String(t.nodeName).toUpperCase() === 'A' && t.getAttribute('href') && isPreactElement(t)) {
-			if (t.hasAttribute('native')) {
-				return;
-			}
-			// if link is handled by the router, prevent browser defaults
-			if (routeFromLink(t)) {
-				return prevent(e);
-			}
-		}
-	} while (t = t.parentNode);
-}
-
-var eventListenersInitialized = false;
-
-function initEventListeners() {
-	if (eventListenersInitialized) {
-		return;
-	}
-
-	if (typeof addEventListener === 'function') {
-		if (!customHistory) {
-			addEventListener('popstate', function () {
-				return routeTo(getCurrentUrl());
-			});
-		}
-		addEventListener('click', delegateLinkHandler);
-	}
-	eventListenersInitialized = true;
-}
-
-var Router = function (Component$$1) {
-	function Router(props) {
-		Component$$1.call(this, props);
-		if (props.history) {
-			customHistory = props.history;
-		}
-
-		this.state = {
-			url: props.url || getCurrentUrl()
-		};
-
-		initEventListeners();
-	}
-
-	if (Component$$1) Router.__proto__ = Component$$1;
-	Router.prototype = Object.create(Component$$1 && Component$$1.prototype);
-	Router.prototype.constructor = Router;
-
-	Router.prototype.shouldComponentUpdate = function shouldComponentUpdate(props) {
-		if (props.static !== true) {
-			return true;
-		}
-		return props.url !== this.props.url || props.onChange !== this.props.onChange;
-	};
-
-	/** Check if the given URL can be matched against any children */
-	Router.prototype.canRoute = function canRoute(url) {
-		return this.getMatchingChildren(this.props.children, url, false).length > 0;
-	};
-
-	/** Re-render children with a new URL to match against. */
-	Router.prototype.routeTo = function routeTo(url) {
-		this._didRoute = false;
-		this.setState({ url: url });
-
-		// if we're in the middle of an update, don't synchronously re-route.
-		if (this.updating) {
-			return this.canRoute(url);
-		}
-
-		this.forceUpdate();
-		return this._didRoute;
-	};
-
-	Router.prototype.componentWillMount = function componentWillMount() {
-		ROUTERS.push(this);
-		this.updating = true;
-	};
-
-	Router.prototype.componentDidMount = function componentDidMount() {
-		var this$1 = this;
-
-		if (customHistory) {
-			this.unlisten = customHistory.listen(function (location) {
-				this$1.routeTo("" + (location.pathname || '') + (location.search || ''));
-			});
-		}
-		this.updating = false;
-	};
-
-	Router.prototype.componentWillUnmount = function componentWillUnmount() {
-		if (typeof this.unlisten === 'function') {
-			this.unlisten();
-		}
-		ROUTERS.splice(ROUTERS.indexOf(this), 1);
-	};
-
-	Router.prototype.componentWillUpdate = function componentWillUpdate() {
-		this.updating = true;
-	};
-
-	Router.prototype.componentDidUpdate = function componentDidUpdate() {
-		this.updating = false;
-	};
-
-	Router.prototype.getMatchingChildren = function getMatchingChildren(children, url, invoke) {
-		return children.slice().sort(pathRankSort).map(function (vnode) {
-			var attrs = vnode.attributes || {},
-			    path = attrs.path,
-			    matches = exec(url, path, attrs);
-			if (matches) {
-				if (invoke !== false) {
-					var newProps = { url: url, matches: matches };
-					assign(newProps, matches);
-					return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["cloneElement"])(vnode, newProps);
-				}
-				return vnode;
-			}
-			return false;
-		}).filter(Boolean);
-	};
-
-	Router.prototype.render = function render(ref, ref$1) {
-		var children = ref.children;
-		var onChange = ref.onChange;
-		var url = ref$1.url;
-
-		var active = this.getMatchingChildren(children, url, true);
-
-		var current = active[0] || null;
-		this._didRoute = !!current;
-
-		var previous = this.previousUrl;
-		if (url !== previous) {
-			this.previousUrl = url;
-			if (typeof onChange === 'function') {
-				onChange({
-					router: this,
-					url: url,
-					previous: previous,
-					active: active,
-					current: current
-				});
-			}
-		}
-
-		return current;
-	};
-
-	return Router;
-}(__WEBPACK_IMPORTED_MODULE_0_preact__["Component"]);
-
-var Link = function Link(props) {
-	return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])('a', assign({ onClick: handleLinkClick }, props));
-};
-
-var Route = function Route(props) {
-	return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(props.component, props);
-};
-
-Router.subscribers = subscribers;
-Router.getCurrentUrl = getCurrentUrl;
-Router.route = route;
-Router.Router = Router;
-Router.Route = Route;
-Router.Link = Link;
-
-/* harmony default export */ __webpack_exports__["default"] = (Router);
-//# sourceMappingURL=preact-router.es.js.map
-
-/***/ }),
-
 /***/ 0:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1177,14 +791,6 @@ var Style = {
 
 /***/ }),
 
-/***/ "Tv6c":
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-module.exports = {"profile":"profile__t2Dqz"};
-
-/***/ }),
-
 /***/ "ZAL5":
 /***/ (function(module, exports) {
 
@@ -1637,115 +1243,6 @@ function TextInput(props) {
 
 /***/ }),
 
-/***/ "gNuw":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Profile; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_preact__ = __webpack_require__("KM04");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_preact___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_preact__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__style__ = __webpack_require__("Tv6c");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__style___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__style__);
-
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-
-
-
-var Profile = function (_Component) {
-	_inherits(Profile, _Component);
-
-	function Profile() {
-		var _temp, _this, _ret;
-
-		_classCallCheck(this, Profile);
-
-		for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-			args[_key] = arguments[_key];
-		}
-
-		return _ret = (_temp = (_this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this.state = {
-			time: Date.now(),
-			count: 10
-		}, _this.updateTime = function () {
-			_this.setState({ time: Date.now() });
-		}, _this.increment = function () {
-			_this.setState({ count: _this.state.count + 1 });
-		}, _temp), _possibleConstructorReturn(_this, _ret);
-	}
-
-	// gets called when this route is navigated to
-	Profile.prototype.componentDidMount = function componentDidMount() {
-		// start a timer for the clock:
-		this.timer = setInterval(this.updateTime, 1000);
-	};
-
-	// gets called just before navigating away from the route
-
-
-	Profile.prototype.componentWillUnmount = function componentWillUnmount() {
-		clearInterval(this.timer);
-	};
-
-	// update the current time
-
-
-	// Note: `user` comes from the URL, courtesy of our router
-	Profile.prototype.render = function render(_ref, _ref2) {
-		var user = _ref.user;
-		var time = _ref2.time,
-		    count = _ref2.count;
-
-		return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
-			'div',
-			{ 'class': __WEBPACK_IMPORTED_MODULE_1__style___default.a.profile },
-			__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
-				'h1',
-				null,
-				'Profile: ',
-				user
-			),
-			__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
-				'p',
-				null,
-				'This is the user profile for a user named ',
-				user,
-				'.'
-			),
-			__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
-				'div',
-				null,
-				'Current time: ',
-				new Date(time).toLocaleString()
-			),
-			__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
-				'p',
-				null,
-				__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
-					'button',
-					{ onClick: this.increment },
-					'Click Me'
-				),
-				' ',
-				'Clicked ',
-				count,
-				' times.'
-			)
-		);
-	};
-
-	return Profile;
-}(__WEBPACK_IMPORTED_MODULE_0_preact__["Component"]);
-
-
-
-/***/ }),
-
 /***/ "ifb1":
 /***/ (function(module, exports) {
 
@@ -1761,10 +1258,8 @@ module.exports = {"TextInput":"TextInput__2w7dK","TextInput_title":"TextInput_ti
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return App; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_preact__ = __webpack_require__("KM04");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_preact___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_preact__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_preact_router__ = __webpack_require__("/QC5");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__header__ = __webpack_require__("sIAo");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__routes_home__ = __webpack_require__("E1C8");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__routes_profile__ = __webpack_require__("gNuw");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__header__ = __webpack_require__("sIAo");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__routes_home__ = __webpack_require__("E1C8");
 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1777,18 +1272,15 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
-
-
 // import Home from 'async!./home';
 // import Profile from 'async!./profile';
 
-var _ref = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_2__header__["a" /* default */], null);
-
-var _ref2 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_3__routes_home__["a" /* default */], { path: '/' });
-
-var _ref3 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_4__routes_profile__["a" /* default */], { path: '/profile/', user: 'me' });
-
-var _ref4 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_4__routes_profile__["a" /* default */], { path: '/profile/:user' });
+var _ref = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
+	'div',
+	{ id: 'app' },
+	__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_1__header__["a" /* default */], null),
+	__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_2__routes_home__["a" /* default */], null)
+);
 
 var App = function (_Component) {
 	_inherits(App, _Component);
@@ -1813,18 +1305,7 @@ var App = function (_Component) {
 
 
 	App.prototype.render = function render() {
-		return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
-			'div',
-			{ id: 'app' },
-			_ref,
-			__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
-				__WEBPACK_IMPORTED_MODULE_1_preact_router__["Router"],
-				{ onChange: this.handleRoute },
-				_ref2,
-				_ref3,
-				_ref4
-			)
-		);
+		return _ref;
 	};
 
 	return App;
@@ -1906,10 +1387,8 @@ module.exports = numToWord;
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Header; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_preact__ = __webpack_require__("KM04");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_preact___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_preact__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_preact_router_match__ = __webpack_require__("sw5u");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_preact_router_match___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_preact_router_match__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__style__ = __webpack_require__("u3et");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__style___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__style__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__style__ = __webpack_require__("u3et");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__style___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__style__);
 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1917,7 +1396,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 
 
 
@@ -1940,27 +1418,8 @@ var Header = function (_Component) {
 	Header.prototype.render = function render() {
 		return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
 			'header',
-			{ 'class': __WEBPACK_IMPORTED_MODULE_2__style___default.a.header },
-			_ref,
-			__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
-				'nav',
-				null,
-				__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
-					__WEBPACK_IMPORTED_MODULE_1_preact_router_match__["Link"],
-					{ activeClassName: __WEBPACK_IMPORTED_MODULE_2__style___default.a.active, href: '/' },
-					'Home'
-				),
-				__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
-					__WEBPACK_IMPORTED_MODULE_1_preact_router_match__["Link"],
-					{ activeClassName: __WEBPACK_IMPORTED_MODULE_2__style___default.a.active, href: '/profile' },
-					'Me'
-				),
-				__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
-					__WEBPACK_IMPORTED_MODULE_1_preact_router_match__["Link"],
-					{ activeClassName: __WEBPACK_IMPORTED_MODULE_2__style___default.a.active, href: '/profile/john' },
-					'John'
-				)
-			)
+			{ 'class': __WEBPACK_IMPORTED_MODULE_1__style___default.a.header },
+			_ref
 		);
 	};
 
@@ -1968,113 +1427,6 @@ var Header = function (_Component) {
 }(__WEBPACK_IMPORTED_MODULE_0_preact__["Component"]);
 
 
-
-/***/ }),
-
-/***/ "sw5u":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-exports.Link = exports.Match = undefined;
-
-var _extends = Object.assign || function (target) {
-	for (var i = 1; i < arguments.length; i++) {
-		var source = arguments[i];for (var key in source) {
-			if (Object.prototype.hasOwnProperty.call(source, key)) {
-				target[key] = source[key];
-			}
-		}
-	}return target;
-};
-
-var _preact = __webpack_require__("KM04");
-
-var _preactRouter = __webpack_require__("/QC5");
-
-function _objectWithoutProperties(obj, keys) {
-	var target = {};for (var i in obj) {
-		if (keys.indexOf(i) >= 0) continue;if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;target[i] = obj[i];
-	}return target;
-}
-
-function _classCallCheck(instance, Constructor) {
-	if (!(instance instanceof Constructor)) {
-		throw new TypeError("Cannot call a class as a function");
-	}
-}
-
-function _possibleConstructorReturn(self, call) {
-	if (!self) {
-		throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-	}return call && (typeof call === "object" || typeof call === "function") ? call : self;
-}
-
-function _inherits(subClass, superClass) {
-	if (typeof superClass !== "function" && superClass !== null) {
-		throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
-	}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-}
-
-var Match = exports.Match = function (_Component) {
-	_inherits(Match, _Component);
-
-	function Match() {
-		var _temp, _this, _ret;
-
-		_classCallCheck(this, Match);
-
-		for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-			args[_key] = arguments[_key];
-		}
-
-		return _ret = (_temp = (_this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this.update = function (url) {
-			_this.nextUrl = url;
-			_this.setState({});
-		}, _temp), _possibleConstructorReturn(_this, _ret);
-	}
-
-	Match.prototype.componentDidMount = function componentDidMount() {
-		_preactRouter.subscribers.push(this.update);
-	};
-
-	Match.prototype.componentWillUnmount = function componentWillUnmount() {
-		_preactRouter.subscribers.splice(_preactRouter.subscribers.indexOf(this.update) >>> 0, 1);
-	};
-
-	Match.prototype.render = function render(props) {
-		var url = this.nextUrl || (0, _preactRouter.getCurrentUrl)(),
-		    path = url.replace(/\?.+$/, '');
-		this.nextUrl = null;
-		return props.children[0] && props.children[0]({
-			url: url,
-			path: path,
-			matches: path === props.path
-		});
-	};
-
-	return Match;
-}(_preact.Component);
-
-var Link = function Link(_ref) {
-	var activeClassName = _ref.activeClassName,
-	    path = _ref.path,
-	    props = _objectWithoutProperties(_ref, ['activeClassName', 'path']);
-
-	return (0, _preact.h)(Match, { path: path || props.href }, function (_ref2) {
-		var matches = _ref2.matches;
-		return (0, _preact.h)(_preactRouter.Link, _extends({}, props, { 'class': [props.class || props.className, matches && activeClassName].filter(Boolean).join(' ') }));
-	});
-};
-
-exports.Link = Link;
-exports.default = Match;
-
-Match.Link = Link;
 
 /***/ }),
 

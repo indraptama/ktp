@@ -1,7 +1,7 @@
 {
-  "name": "Preact PWA",
-  "short_name": "Preact PWA",
-  "start_url": "/",
+  "name": "KTP",
+  "short_name": "KTP",
+  "start_url": "http://www.indrapratama.com/ktp/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#fff",
