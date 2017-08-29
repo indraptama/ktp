@@ -1,3 +1,0 @@
-# ktp
-
-Describe ktp here.
