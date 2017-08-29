@@ -1,0 +1,45 @@
+.TextInput {
+    display: block;
+    width: 100%;
+}
+
+.TextInput_title {
+    display: block;
+    margin-bottom: .25rem;
+    text-transform: capitalize;
+    font-size: .65rem;
+    color: rgba(0, 0, 0, .5);
+    transition: all 250ms ease;
+}
+
+.TextInput_input {
+    border: none;
+    display: block;
+    font-size: 16px;
+    margin-bottom: .25rem;
+    outline: none;
+    width: 100%;
+    background-color: transparent;
+
+}
+
+.TextInput_input::placeholder {
+  font-style: italic;
+  color: rgba(0,0,0,.25);
+}
+
+.TextInput_highlight {
+    display: block;
+    background-color: pink;
+    height: 1px;
+    overflow: hidden;
+}
+
+.TextInput_highlightItem {
+    display: block;
+    width: 100%;
+    height: 1px;
+    background-color: #673AB7;
+    transform: translate3d(-100%,0,0);
+    transition: all 250ms ease;
+}
