@@ -17,6 +17,14 @@
   margin-bottom: 3rem;
 }
 
+.KtpField_header h3 {
+  color: #888;
+  font-weight: normal;
+  font-size: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 0;
+}
+
 .KtpField h4 {
   font-weight: normal;
   margin-top: 3rem;
@@ -39,8 +47,6 @@
   padding-right: .75rem;
 }
 
-
-
 .KtpField_action {
   display: flex;
   justify-content: flex-end;
@@ -51,5 +57,10 @@
   height: 32px;
   width: 80px;
   border: none;
+  border-radius: 2px;
+}
 
+.KtpField_buttonSave {
+  color: #fff;
+  background-color: #673AB7;
 }

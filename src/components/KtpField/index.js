@@ -78,7 +78,8 @@ export default class KtpField extends Component {
     return (
       <div className={style.KtpField}>
         <header className={style.KtpField_header}>
-          Isilah data berikut sesuai dengan Kartu Identitas Penghadap
+          <img src="assets/icons/ktp.svg" alt=""/>
+          <h3>Isilah data berikut sesuai dengan Kartu Identitas Penghadap</h3>
         </header>
         <form>
           <ul>
@@ -131,8 +132,8 @@ export default class KtpField extends Component {
     			</ul>
           <div className={style.KtpField_action}>
 
-              <button onClick={this.props.cancelInput}>Cancel</button>
-              <button onClick={this.handleSave.bind(this)}>Save</button>
+              <button className={style.KtpField_buttonCancel}onClick={this.props.cancelInput}>Cancel</button>
+              <button className={style.KtpField_buttonSave}onClick={this.handleSave.bind(this)}>Save</button>
 
           </div>
     		</form>

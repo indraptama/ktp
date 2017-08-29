@@ -17,7 +17,7 @@ export default class Home extends Component {
       modalOpen: false,
 		};
 		this.handleSaveData = this.handleSaveData.bind(this);
-    this.addNewData = this.addNewData.bind(this);
+    this.modalOpen = this.modalOpen.bind(this);
     this.modalClose = this.modalClose.bind(this);
 
   }
@@ -35,7 +35,7 @@ export default class Home extends Component {
 		});
 	}
 
-  addNewData(e) {
+  modalOpen(e) {
     e.preventDefault();
     this.setState({
       modalOpen: true,
@@ -51,6 +51,7 @@ export default class Home extends Component {
 
 	render() {
 		const persons = this.state.pihak_1;
+
     const userCards = Object.keys(persons).map(person => {
       return (
         <div key={persons[person].nik}>
@@ -62,7 +63,9 @@ export default class Home extends Component {
 
     const resultPihaks_1 = Object.keys(persons).map(person => {
       return (
-        <div key={persons[person].nik}><KtpResult dataKTP={persons[person]} /></div>
+        <div key={persons[person].nik}>
+          <KtpResult dataKTP={persons[person]} editButton={this.modalOpen}/>
+        </div>
       )
     })
 
@@ -79,7 +82,7 @@ export default class Home extends Component {
                 {userCards}
               </div>
               <div className={style.partyFooter}>
-                <ButtonFab onClick={this.addNewData}>
+                <ButtonFab onClick={this.modalOpen}>
                   <i class="material-icons md-24">add</i>
                 </ButtonFab>
               </div>
