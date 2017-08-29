@@ -7,7 +7,7 @@ function numToWord(s) {
 
     s = s.toString();
     s = s.replace(/[, ]/g, '');
-    if (s != parseFloat(s)) return 'not a number';
+    if (s != parseFloat(s)) return 'XXXX';
 
     // handle koma
     let x = s.indexOf(',');

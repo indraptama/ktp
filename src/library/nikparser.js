@@ -19,9 +19,10 @@ function nikParser(nik) {
 	result.cityCode = cityCode;
 	result.kecamatanCode = kecamatanCode;
 	result.bornDate = dateAll;
+  result.bornDay = dateZero;
 	result.bornMonth = month;
 	result.bornYear = year;
-	result.sex = gender;
+	result.gender = gender;
 
 	return result;
 }

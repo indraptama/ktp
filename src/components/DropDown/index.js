@@ -24,6 +24,7 @@ export default function DropDown(props) {
             <span className={style.DropDown_title}  ref={(span) => { title = span; }} >{props.title}</span>
             <select className={style.DropDown_input}
         			type={props.type}
+              value={props.Value}
               name={props.name}
               placeholder={props.placeholder}
         			onChange={props.onChange}
