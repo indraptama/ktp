@@ -1,0 +1,66 @@
+.KtpField {
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1.5rem;
+  background-color: #fff;
+  /*box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);*/
+  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  border-radius: 2px;
+}
+
+.KtpField_header {
+  text-align: center;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 3rem;
+}
+
+.KtpField_header h3 {
+  color: #888;
+  font-weight: normal;
+  font-size: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 0;
+}
+
+.KtpField h4 {
+  font-weight: normal;
+  margin-top: 3rem;
+  color: orange;
+}
+
+.KtpField ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.KtpField li {
+  list-style: none;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.KtpField li > * {
+  padding-left: .75rem;
+  padding-right: .75rem;
+}
+
+.KtpField_action {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.KtpField_action button {
+  margin-left: .5rem;
+  height: 32px;
+  width: 80px;
+  border: none;
+  border-radius: 2px;
+}
+
+.KtpField_buttonSave {
+  color: #fff;
+  background-color: #673AB7;
+}
