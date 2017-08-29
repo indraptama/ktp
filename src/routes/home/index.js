@@ -3,8 +3,9 @@ import style from './style';
 import gstyle from '../../components/_style';
 import KtpField from '../../components/KtpField';
 import KtpResult from '../../components/KtpResult';
-import UserPill from '../../components/UserPill';
 import UserCard from '../../components/UserCard';
+import ButtonFab from '../../components/ButtonFab';
+import Modal from '../../components/Modal';
 
 
 export default class Home extends Component {
@@ -12,9 +13,12 @@ export default class Home extends Component {
 		super(props);
 		this.state = {
 			pihak_1: {},
-			pihak_2: {}
+			pihak_2: {},
+      modalOpen: false,
 		};
 		this.handleSaveData = this.handleSaveData.bind(this);
+    this.addNewData = this.addNewData.bind(this);
+    this.modalClose = this.modalClose.bind(this);
 
   }
 
@@ -26,16 +30,39 @@ export default class Home extends Component {
 		// pihak_1[`${noUrut}_${data._id}`] = data;
 		// pihak_1[data._id] = data;
 		this.setState({
-			pihak_1
+			pihak_1,
+      modalOpen: false,
 		});
 	}
 
+  addNewData(e) {
+    e.preventDefault();
+    this.setState({
+      modalOpen: true,
+    })
+  }
+
+  modalClose(e) {
+    e.preventDefault();
+    this.setState({
+      modalOpen: false,
+    })
+  }
 
 	render() {
 		const persons = this.state.pihak_1;
-    const Pihaks_1 = Object.keys(persons).map(person => {
+    const userCards = Object.keys(persons).map(person => {
       return (
-        <KtpResult dataKTP={persons[person]} key={persons[person].nik} />
+        <div key={persons[person].nik}>
+          <UserCard gender={persons[person].gender}
+            fullName={persons[person].fullName}
+            nik={persons[person].nik} /></div>
+      )
+    })
+
+    const resultPihaks_1 = Object.keys(persons).map(person => {
+      return (
+        <div key={persons[person].nik}><KtpResult dataKTP={persons[person]} /></div>
       )
     })
 
@@ -43,20 +70,37 @@ export default class Home extends Component {
 			<div className={style.home}>
 				<div className={gstyle.flex}>
 					<div className={[gstyle.w_50, style.Compasitor].join(' ')}>
-            <UserPill gender={"female"} fullName="indra pratama putra" nik="12345678912345" onClick={console.log('hallo')}/>
-						<UserCard gender={"male"} fullName="Tn. indra pratama putra" nik="12345678912345" onClick={console.log('hallo')}/>
+
+            <div className={style.party}>
+              <header className={style.partyHeader}>
+                <h6>Pihak Pertama</h6>
+              </header>
+              <div className={style.partyList}>
+                {userCards}
+              </div>
+              <div className={style.partyFooter}>
+                <ButtonFab onClick={this.addNewData}>
+                  <i class="material-icons md-24">add</i>
+                </ButtonFab>
+              </div>
+            </div>
 					</div>
 
 					<div className={[gstyle.w_50, style.ResultPaper].join(' ')}>
-						{
-							Pihaks_1
-
-            }
+						<ol>{
+							resultPihaks_1
+            }</ol>
 					</div>
 				</div>
+
+        <Modal isActive={this.state.modalOpen}>
+          <KtpField saveData={this.handleSaveData} cancelInput={this.modalClose}/>
+        </Modal>
 			</div>
 		);
 	}
 }
 
 {/* <KtpField saveData={this.handleSaveData} /> */}
+
+{/* <UserCard gender={"male"} fullName="Tn. indra pratama putra" nik="12345678912345" onClick={console.log('hallo')}/> */}

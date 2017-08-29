@@ -59,10 +59,10 @@ export default class KtpField extends Component {
     // console.log(dataKTP);
   }
 
-  handleCancel(e) {
-    e.preventDefault();
-    //this.props.CancelData
-  }
+  // handleCancel(e) {
+  //   e.preventDefault();
+  //   this.props.cancelInput;
+  // }
 
   handleInputChange(event) {
     const target = event.target;
@@ -131,7 +131,7 @@ export default class KtpField extends Component {
     			</ul>
           <div className={style.KtpField_action}>
 
-              <button onClick={this.handleCancel.bind(this)}>Cancel</button>
+              <button onClick={this.props.cancelInput}>Cancel</button>
               <button onClick={this.handleSave.bind(this)}>Save</button>
 
           </div>

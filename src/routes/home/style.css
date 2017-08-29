@@ -15,3 +15,26 @@
   min-height: 100vh;
   line-height: 1.5;
 }
+
+.partyHeader {
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+
+.partyHeader h6 {
+  font-size: 14px;
+  font-weight: normal;
+  margin: 0;
+}
+
+.partyList {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.partyFooter {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  text-align: right;
+}

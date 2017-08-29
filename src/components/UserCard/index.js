@@ -4,9 +4,11 @@ import style from './style';
 
 export default function UserCard(props) {
   const userSex = props.gender === "female" ? "genderBgFemale" : "genderBgMale";
+  const sexColor = props.gender === "female" ? "#E91E63" : "#673AB7";
+  const sexAvatar = props.gender === "female" ? genderStyle.female : genderStyle.male;
   return (
     <div href="#" className={[style.UserCard, userSex].join(' ')}>
-      <div className={style.UserCard_img} style={`background-color: url(${props.image})`}>
+      <div className={style.UserCard_img} style={sexAvatar}>
         <img src={props.image} alt=""/>
       </div>
       <div className={style.UserCard_desc}>
@@ -16,4 +18,15 @@ export default function UserCard(props) {
 
     </div>
   )
+}
+
+const genderStyle = {
+  male: {
+    backgroundColor: "#2196F3",
+    backgroundImage: "url('assets/icons/male.svg')",
+  },
+  female: {
+    backgroundColor: "#E91E63",
+    backgroundImage: "url('assets/icons/female.svg')",
+  },
 }
