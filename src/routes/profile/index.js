@@ -1,5 +1,8 @@
 import { h, Component } from 'preact';
 import style from './style';
+import {observable} from "mobx";
+import {observer} from 'mobx-react';
+
 
 export default class Profile extends Component {
 	state = {

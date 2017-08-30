@@ -49,7 +49,7 @@ function KtpResult(props) {
 				{notarisLocation('bandung', templateSource.cityName)}
 			</p>
       <div className={style.resultAction}>
-        <a href="#" onClick={props.editButton}>
+        <a href="#" onClick={() => props.editButton(props.index)}>
           <img src="assets/icons/edit.svg" alt=""/>
         </a>
       </div>

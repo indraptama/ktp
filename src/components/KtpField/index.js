@@ -15,25 +15,24 @@ export default class KtpField extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      _idUrut: this.props.noUrut,
-      _id:  this.props.inputData._id,
-      nik:  this.props.inputData.nik,
-      fullName: this.props.inputData.fullName,
-      bornPlace: this.props.inputData.bornPlace,
-      bornDay: this.props.inputData.bornDay,
-      bornMonth: this.props.inputData.bornMonth,
-      bornYear: this.props.inputData.bornYear,
-      gender: this.props.inputData.gender,
-      streetAddress: this.props.inputData.streetAddress,
-      rt: this.props.inputData.rt,
-      rw: this.props.inputData.rw,
-      kelurahanType: this.props.inputData.kelurahanType,
-      kelurahanName: this.props.inputData.kelurahanName,
-      kecamatan: this.props.inputData.kecamatan,
-      cityType: this.props.inputData.cityType,
-      cityName: this.props.inputData.cityName,
-      martialStatus: this.props.inputData.martialStatus,
-      occupation: this.props.inputData.occupation,
+      _id:  this.props.defaultData._id,
+      nik:  this.props.defaultData.nik,
+      fullName: this.props.defaultData.fullName,
+      bornPlace: this.props.defaultData.bornPlace,
+      bornDay: this.props.defaultData.bornDay,
+      bornMonth: this.props.defaultData.bornMonth,
+      bornYear: this.props.defaultData.bornYear,
+      gender: this.props.defaultData.gender,
+      streetAddress: this.props.defaultData.streetAddress,
+      rt: this.props.defaultData.rt,
+      rw: this.props.defaultData.rw,
+      kelurahanType: this.props.defaultData.kelurahanType,
+      kelurahanName: this.props.defaultData.kelurahanName,
+      kecamatan: this.props.defaultData.kecamatan,
+      cityType: this.props.defaultData.cityType,
+      cityName: this.props.defaultData.cityName,
+      martialStatus: this.props.defaultData.martialStatus,
+      occupation: this.props.defaultData.occupation,
     }
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -44,7 +43,6 @@ export default class KtpField extends Component {
   handleSave(e) {
     e.preventDefault();
     let dataKTP = {
-      _idUrut: this.state._idUrut,
       _id: this.state.nik,
       nik: this.state.nik,
       fullName: this.state.fullName,
@@ -62,29 +60,30 @@ export default class KtpField extends Component {
       martialStatus: this.state.martialStatus,
       occupation: this.state.occupation,
     }
-    //  Export State to Parent Components as Object
+    
+    //  Export state to Parent Components as Object
     this.props.outputData(dataKTP);
 
     // Reset State to initial Value
     this.setState({
-      _id:  this.props.inputData._id,
-      nik:  this.props.inputData.nik,
-      fullName: this.props.inputData.fullName,
-      bornPlace: this.props.inputData.bornPlace,
-      bornDay: this.props.inputData.bornDay,
-      bornMonth: this.props.inputData.bornMonth,
-      bornYear: this.props.inputData.bornYear,
-      gender: this.props.inputData.gender,
-      streetAddress: this.props.inputData.streetAddress,
-      rt: this.props.inputData.rt,
-      rw: this.props.inputData.rw,
-      kelurahanType: this.props.inputData.kelurahanType,
-      kelurahanName: this.props.inputData.kelurahanName,
-      kecamatan: this.props.inputData.kecamatan,
-      cityType: this.props.inputData.cityType,
-      cityName: this.props.inputData.cityName,
-      martialStatus: this.props.inputData.martialStatus,
-      occupation: this.props.inputData.occupation,
+      _id:  this.props.defaultData._id,
+      nik:  this.props.defaultData.nik,
+      fullName: this.props.defaultData.fullName,
+      bornPlace: this.props.defaultData.bornPlace,
+      bornDay: this.props.defaultData.bornDay,
+      bornMonth: this.props.defaultData.bornMonth,
+      bornYear: this.props.defaultData.bornYear,
+      gender: this.props.defaultData.gender,
+      streetAddress: this.props.defaultData.streetAddress,
+      rt: this.props.defaultData.rt,
+      rw: this.props.defaultData.rw,
+      kelurahanType: this.props.defaultData.kelurahanType,
+      kelurahanName: this.props.defaultData.kelurahanName,
+      kecamatan: this.props.defaultData.kecamatan,
+      cityType: this.props.defaultData.cityType,
+      cityName: this.props.defaultData.cityName,
+      martialStatus: this.props.defaultData.martialStatus,
+      occupation: this.props.defaultData.occupation,
     })
   }
 
@@ -102,7 +101,6 @@ export default class KtpField extends Component {
     const NikResult = (NIK) => {
       if (NIK.length === 16) {
         const NIKParser = nikParser(NIK);
-        console.log(NIKParser);
         this.setState({
           nik: Value,
           bornDay: NIKParser.bornDay,
@@ -112,13 +110,11 @@ export default class KtpField extends Component {
         })
       }
       else {
-        console.log('error')
         this.setState({
           nik: Value,
         })
       }
     }
-
     NikResult(Value);
   }
 
