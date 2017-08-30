@@ -7,39 +7,21 @@ import UserCard from '../../components/UserCard';
 import ButtonFab from '../../components/ButtonFab';
 import Modal from '../../components/Modal';
 
-
-const mockupData = {
-  _id: "3212015607900005",
-  nik: "3212015607900005",
-  fullName: "Jessica Veranda",
-  bornPlace: "jakarta",
-  bornDay: "01",
-  bornMonth: "12",
-  bornYear: "1985",
-  gender: "female",
-  streetAddress: "jalan jakarta 48",
-  rt: "004",
-  rw: "008",
-  kelurahanType: "kelurahan",
-  kelurahanName: "senayan",
-  kecamatan: "senayan",
-  cityType: "kota",
-  cityName: "jakarta pusat",
-  martialStatus: "single",
-  occupation: "idol",
-}
-
 export default class Home extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			pihak_1: {},
 			pihak_2: {},
-      modalOpen: false,
+      modalInputOpen: false,
+      modalEditOpen: false,
 		};
 		this.handleSaveData = this.handleSaveData.bind(this);
-    this.modalOpen = this.modalOpen.bind(this);
-    this.modalClose = this.modalClose.bind(this);
+    this.handleEditData = this.handleEditData.bind(this);
+    this.modalInputOpen = this.modalInputOpen.bind(this);
+    this.modalInputClose = this.modalInputClose.bind(this);
+    this.modalEditOpen = this.modalEditOpen.bind(this);
+    this.modalEditClose = this.modalEditClose.bind(this);
   }
 
 	handleSaveData(data) {
@@ -47,25 +29,44 @@ export default class Home extends Component {
 		const noUrut = (Object.keys(pihak_1).length - 1) + 1;
 		const nik = data.nik;
     pihak_1[`${noUrut}`] = data;
-		// pihak_1[`${noUrut}_${data._id}`] = data;
-		// pihak_1[data._id] = data;
+
 		this.setState({
 			pihak_1,
-      modalOpen: false,
+      modalInputOpen: false,
 		});
 	}
 
-  modalOpen(e) {
-    e.preventDefault();
+  handleEditData(data) {
     this.setState({
-      modalOpen: true,
+      modalEditOpen: false,
     })
   }
 
-  modalClose(e) {
+  modalInputOpen(e) {
     e.preventDefault();
     this.setState({
-      modalOpen: false,
+      modalInputOpen: true,
+    })
+  }
+
+  modalInputClose(e) {
+    e.preventDefault();
+    this.setState({
+      modalInputOpen: false,
+    })
+  }
+
+  modalEditOpen(e, data) {
+    e.preventDefault();
+    this.setState({
+      modalEditOpen: true,
+    })
+  }
+
+  modalEditClose(e, data) {
+    e.preventDefault();
+    this.setState({
+      modalEditOpen: false,
     })
   }
 
@@ -77,14 +78,18 @@ export default class Home extends Component {
         <div key={persons[person].nik}>
           <UserCard gender={persons[person].gender}
             fullName={persons[person].fullName}
-            nik={persons[person].nik} /></div>
+            nik={persons[person].nik} />
+        </div>
       )
     })
 
     const resultPihaks_1 = Object.keys(persons).map(person => {
       return (
         <div key={persons[person].nik}>
-          <KtpResult dataKTP={persons[person]} editButton={this.modalOpen}/>
+          <KtpResult dataKTP={persons[person]} editButton={this.modalEditOpen}/>
+          <Modal isActive={this.state.modalEditOpen}>
+            <KtpField outputData={this.handleEditData} cancelInput={this.modalEditClose} inputData={persons[person]} _idUrut={(Object.keys(persons[person]).length - 1) + 1}/>
+          </Modal>
         </div>
       )
     })
@@ -93,7 +98,6 @@ export default class Home extends Component {
 			<div className={style.home}>
 				<div className={gstyle.flex}>
 					<div className={[gstyle.w_50, style.Compasitor].join(' ')}>
-
             <div className={style.party}>
               <header className={style.partyHeader}>
                 <h6>Pihak Pertama</h6>
@@ -102,13 +106,12 @@ export default class Home extends Component {
                 {userCards}
               </div>
               <div className={style.partyFooter}>
-                <ButtonFab onClick={this.modalOpen}>
+                <ButtonFab onClick={this.modalInputOpen}>
                   <i class="material-icons md-24">add</i>
                 </ButtonFab>
               </div>
             </div>
 					</div>
-
 					<div className={[gstyle.w_50, style.ResultPaper].join(' ')}>
 						<ol>{
 							resultPihaks_1
@@ -116,14 +119,32 @@ export default class Home extends Component {
 					</div>
 				</div>
 
-        <Modal isActive={this.state.modalOpen}>
-          <KtpField outputData={this.handleSaveData} cancelInput={this.modalClose} inputData={mockupData}/>
+        <Modal isActive={this.state.modalInputOpen}>
+          <KtpField outputData={this.handleSaveData} cancelInput={this.modalInputClose} inputData={defaultDataKtp}/>
         </Modal>
+
 			</div>
 		);
 	}
 }
 
-{/* <KtpField saveData={this.handleSaveData} /> */}
-
-{/* <UserCard gender={"male"} fullName="Tn. indra pratama putra" nik="12345678912345" onClick={console.log('hallo')}/> */}
+const defaultDataKtp = {
+  _id: "",
+  nik: "",
+  fullName: "",
+  bornPlace: "",
+  bornDay: "",
+  bornMonth: "",
+  bornYear: "",
+  gender: "male",
+  streetAddress: "",
+  rt: "",
+  rw: "",
+  kelurahanType: "desa",
+  kelurahanName: "",
+  kecamatan: "",
+  cityType: "kabupaten",
+  cityName: "",
+  martialStatus: "single",
+  occupation: "",
+}

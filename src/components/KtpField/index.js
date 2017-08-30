@@ -15,6 +15,7 @@ export default class KtpField extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      _idUrut: this.props.noUrut,
       _id:  this.props.inputData._id,
       nik:  this.props.inputData.nik,
       fullName: this.props.inputData.fullName,
@@ -43,6 +44,7 @@ export default class KtpField extends Component {
   handleSave(e) {
     e.preventDefault();
     let dataKTP = {
+      _idUrut: this.state._idUrut,
       _id: this.state.nik,
       nik: this.state.nik,
       fullName: this.state.fullName,
@@ -65,24 +67,24 @@ export default class KtpField extends Component {
 
     // Reset State to initial Value
     this.setState({
-      _id: '',
-      nik: '',
-      fullName:'',
-      bornPlace:'',
-      bornDay:'',
-      bornMonth:'',
-      bornYear:'',
-      gender:'male',
-      streetAddress:'',
-      rt:'',
-      rw:'',
-      kelurahanType:'desa',
-      kelurahanName:'',
-      kecamatan:'',
-      cityType:'kabupaten',
-      cityName:'',
-      martialStatus:'single',
-      occupation:'',
+      _id:  this.props.inputData._id,
+      nik:  this.props.inputData.nik,
+      fullName: this.props.inputData.fullName,
+      bornPlace: this.props.inputData.bornPlace,
+      bornDay: this.props.inputData.bornDay,
+      bornMonth: this.props.inputData.bornMonth,
+      bornYear: this.props.inputData.bornYear,
+      gender: this.props.inputData.gender,
+      streetAddress: this.props.inputData.streetAddress,
+      rt: this.props.inputData.rt,
+      rw: this.props.inputData.rw,
+      kelurahanType: this.props.inputData.kelurahanType,
+      kelurahanName: this.props.inputData.kelurahanName,
+      kecamatan: this.props.inputData.kecamatan,
+      cityType: this.props.inputData.cityType,
+      cityName: this.props.inputData.cityName,
+      martialStatus: this.props.inputData.martialStatus,
+      occupation: this.props.inputData.occupation,
     })
   }
 
@@ -177,10 +179,8 @@ export default class KtpField extends Component {
             </li>
     			</ul>
           <div className={style.KtpField_action}>
-
-              <button className={style.KtpField_buttonCancel}onClick={this.props.cancelInput}>Cancel</button>
-              <button className={style.KtpField_buttonSave}onClick={this.handleSave.bind(this)}>Save</button>
-
+            <button className={style.KtpField_buttonCancel}onClick={this.props.cancelInput}>Cancel</button>
+            <button className={style.KtpField_buttonSave}onClick={this.handleSave.bind(this)}>Save</button>
           </div>
     		</form>
     	</div>
@@ -221,8 +221,6 @@ const city = [
     value: 'kota'
   }
 ]
-
-
 
 const martialStatus = [
   {
