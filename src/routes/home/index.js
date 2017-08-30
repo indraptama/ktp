@@ -8,6 +8,27 @@ import ButtonFab from '../../components/ButtonFab';
 import Modal from '../../components/Modal';
 
 
+const mockupData = {
+  _id: "3212015607900005",
+  nik: "3212015607900005",
+  fullName: "Jessica Veranda",
+  bornPlace: "jakarta",
+  bornDay: "01",
+  bornMonth: "12",
+  bornYear: "1985",
+  gender: "female",
+  streetAddress: "jalan jakarta 48",
+  rt: "004",
+  rw: "008",
+  kelurahanType: "kelurahan",
+  kelurahanName: "senayan",
+  kecamatan: "senayan",
+  cityType: "kota",
+  cityName: "jakarta pusat",
+  martialStatus: "single",
+  occupation: "idol",
+}
+
 export default class Home extends Component {
 	constructor(props) {
 		super(props);
@@ -19,7 +40,6 @@ export default class Home extends Component {
 		this.handleSaveData = this.handleSaveData.bind(this);
     this.modalOpen = this.modalOpen.bind(this);
     this.modalClose = this.modalClose.bind(this);
-
   }
 
 	handleSaveData(data) {
@@ -97,7 +117,7 @@ export default class Home extends Component {
 				</div>
 
         <Modal isActive={this.state.modalOpen}>
-          <KtpField saveData={this.handleSaveData} cancelInput={this.modalClose}/>
+          <KtpField outputData={this.handleSaveData} cancelInput={this.modalClose} inputData={mockupData}/>
         </Modal>
 			</div>
 		);

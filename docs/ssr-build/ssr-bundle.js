@@ -506,6 +506,7 @@ function DropDown(props) {
       'select',
       { className: __WEBPACK_IMPORTED_MODULE_1__style___default.a.DropDown_input,
         type: props.type,
+        value: props.Value,
         name: props.name,
         placeholder: props.placeholder,
         onChange: props.onChange,
@@ -661,6 +662,27 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
+var mockupData = {
+  _id: "3212015607900005",
+  nik: "3212015607900005",
+  fullName: "Jessica Veranda",
+  bornPlace: "jakarta",
+  bornDay: "01",
+  bornMonth: "12",
+  bornYear: "1985",
+  gender: "female",
+  streetAddress: "jalan jakarta 48",
+  rt: "004",
+  rw: "008",
+  kelurahanType: "kelurahan",
+  kelurahanName: "senayan",
+  kecamatan: "senayan",
+  cityType: "kota",
+  cityName: "jakarta pusat",
+  martialStatus: "single",
+  occupation: "idol"
+};
+
 var _ref = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
   'h6',
   null,
@@ -689,7 +711,6 @@ var Home = function (_Component) {
     _this.handleSaveData = _this.handleSaveData.bind(_this);
     _this.modalOpen = _this.modalOpen.bind(_this);
     _this.modalClose = _this.modalClose.bind(_this);
-
     return _this;
   }
 
@@ -789,7 +810,7 @@ var Home = function (_Component) {
       __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
         __WEBPACK_IMPORTED_MODULE_7__components_Modal__["a" /* default */],
         { isActive: this.state.modalOpen },
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_3__components_KtpField__["a" /* default */], { saveData: this.handleSaveData, cancelInput: this.modalClose })
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_3__components_KtpField__["a" /* default */], { outputData: this.handleSaveData, cancelInput: this.modalClose, inputData: mockupData })
       )
     );
   };
@@ -1123,6 +1144,44 @@ function getTitle(gender, martialStatus) {
 
 /***/ }),
 
+/***/ "PdBQ":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+function nikParser(nik) {
+	var result = {};
+	var arrayNik = nik.split('').map(function (key) {
+		return parseInt(key, 10);
+	});
+	var cityCode = arrayNik.slice(0, 4).join('');
+	var kecamatanCode = arrayNik.slice(0, 6).join('');
+	var bornDate = arrayNik.slice(6, 8).join('');
+	var bornMonth = arrayNik.slice(8, 10).join('');
+	var bornYear = arrayNik.slice(10, 12).join('');
+
+	var date = parseFloat(bornDate) >= 40 ? parseFloat(bornDate) - 40 : parseFloat(bornDate);
+	var dateZero = date.toString().length === 1 ? '0' + date.toString() : date.toString();
+	var month = parseFloat(bornMonth);
+	var year = parseFloat('19' + bornYear);
+	var gender = parseInt(bornDate, 10) >= 40 ? 'female' : 'male';
+
+	var dateAll = dateZero + '-' + bornMonth + '-19' + bornYear;
+
+	result.cityCode = cityCode;
+	result.kecamatanCode = kecamatanCode;
+	result.bornDate = dateAll;
+	result.bornDay = dateZero;
+	result.bornMonth = month;
+	result.bornYear = year;
+	result.gender = gender;
+
+	return result;
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (nikParser);
+
+/***/ }),
+
 /***/ "TDbV":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1177,14 +1236,6 @@ var Style = {
 
 /***/ }),
 
-/***/ "Tv6c":
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-module.exports = {"profile":"profile__t2Dqz"};
-
-/***/ }),
-
 /***/ "ZAL5":
 /***/ (function(module, exports) {
 
@@ -1200,12 +1251,13 @@ module.exports = {"home":"home__MseGd","Compasitor":"Compasitor__ZgeZB","ResultP
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return KtpField; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_preact__ = __webpack_require__("KM04");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_preact___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_preact__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__style__ = __webpack_require__("aDwu");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__style___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__style__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__style__ = __webpack_require__("2AN3");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__library_nikparser_js__ = __webpack_require__("PdBQ");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__style__ = __webpack_require__("aDwu");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__style___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__style__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__TextInput__ = __webpack_require__("g3LN");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__DropDown__ = __webpack_require__("1lu6");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__style__ = __webpack_require__("2AN3");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__style___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__style__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__TextInput__ = __webpack_require__("g3LN");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__DropDown__ = __webpack_require__("1lu6");
 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1216,11 +1268,14 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
+// import Library
+
+
+
 
 
 // Import Components
 
-// import MaskInput from '../MaskInput';
 
 
 var _ref = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])('img', { src: 'assets/icons/ktp.svg', alt: '' });
@@ -1272,6 +1327,55 @@ var KtpField = function (_Component) {
     var _this = _possibleConstructorReturn(this, _Component.call(this, props));
 
     _this.state = {
+      _id: _this.props.inputData._id,
+      nik: _this.props.inputData.nik,
+      fullName: _this.props.inputData.fullName,
+      bornPlace: _this.props.inputData.bornPlace,
+      bornDay: _this.props.inputData.bornDay,
+      bornMonth: _this.props.inputData.bornMonth,
+      bornYear: _this.props.inputData.bornYear,
+      gender: _this.props.inputData.gender,
+      streetAddress: _this.props.inputData.streetAddress,
+      rt: _this.props.inputData.rt,
+      rw: _this.props.inputData.rw,
+      kelurahanType: _this.props.inputData.kelurahanType,
+      kelurahanName: _this.props.inputData.kelurahanName,
+      kecamatan: _this.props.inputData.kecamatan,
+      cityType: _this.props.inputData.cityType,
+      cityName: _this.props.inputData.cityName,
+      martialStatus: _this.props.inputData.martialStatus,
+      occupation: _this.props.inputData.occupation
+    };
+
+    _this.handleInputChange = _this.handleInputChange.bind(_this);
+    _this.handleInputNik = _this.handleInputNik.bind(_this);
+    return _this;
+  }
+
+  KtpField.prototype.handleSave = function handleSave(e) {
+    e.preventDefault();
+    var dataKTP = {
+      _id: this.state.nik,
+      nik: this.state.nik,
+      fullName: this.state.fullName,
+      bornPlace: this.state.bornPlace,
+      bornDate: this.state.bornDay + '-' + this.state.bornMonth + '-' + this.state.bornYear,
+      gender: this.state.gender,
+      streetAddress: this.state.streetAddress,
+      rt: this.state.rt,
+      rw: this.state.rw,
+      kelurahanType: this.state.kelurahanType,
+      kelurahanName: this.state.kelurahanName,
+      kecamatan: this.state.kecamatan,
+      cityType: this.state.cityType,
+      cityName: this.state.cityName,
+      martialStatus: this.state.martialStatus,
+      occupation: this.state.occupation
+      //  Export State to Parent Components as Object
+    };this.props.outputData(dataKTP);
+
+    // Reset State to initial Value
+    this.setState({
       _id: '',
       nik: '',
       fullName: '',
@@ -1290,40 +1394,8 @@ var KtpField = function (_Component) {
       cityName: '',
       martialStatus: 'single',
       occupation: ''
-    };
-
-    _this.handleInputChange = _this.handleInputChange.bind(_this);
-    return _this;
-  }
-
-  KtpField.prototype.handleSave = function handleSave(e) {
-    var dataKTP = {
-      _id: this.state.nik,
-      nik: this.state.nik,
-      fullName: this.state.fullName,
-      bornPlace: this.state.bornPlace,
-      bornDate: this.state.bornDay + '-' + this.state.bornMonth + '-' + this.state.bornYear,
-      gender: this.state.gender,
-      streetAddress: this.state.streetAddress,
-      rt: this.state.rt,
-      rw: this.state.rw,
-      kelurahanType: this.state.kelurahanType,
-      kelurahanName: this.state.kelurahanName,
-      kecamatan: this.state.kecamatan,
-      cityType: this.state.cityType,
-      cityName: this.state.cityName,
-      martialStatus: this.state.martialStatus,
-      occupation: this.state.occupation
-    };
-    e.preventDefault();
-    this.props.saveData(dataKTP);
-    // console.log(dataKTP);
+    });
   };
-
-  // handleCancel(e) {
-  //   e.preventDefault();
-  //   this.props.cancelInput;
-  // }
 
   KtpField.prototype.handleInputChange = function handleInputChange(event) {
     var _setState;
@@ -1331,17 +1403,42 @@ var KtpField = function (_Component) {
     var target = event.target;
     var value = target.type === 'checkbox' ? target.checked : target.value;
     var name = target.name;
-
     this.setState((_setState = {}, _setState[name] = value, _setState));
+  };
+
+  KtpField.prototype.handleInputNik = function handleInputNik(event) {
+    var _this2 = this;
+
+    var Value = event.target.value;
+    var NikResult = function NikResult(NIK) {
+      if (NIK.length === 16) {
+        var NIKParser = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__library_nikparser_js__["a" /* default */])(NIK);
+        console.log(NIKParser);
+        _this2.setState({
+          nik: Value,
+          bornDay: NIKParser.bornDay,
+          bornMonth: NIKParser.bornMonth,
+          bornYear: NIKParser.bornYear,
+          gender: NIKParser.gender
+        });
+      } else {
+        console.log('error');
+        _this2.setState({
+          nik: Value
+        });
+      }
+    };
+
+    NikResult(Value);
   };
 
   KtpField.prototype.render = function render() {
     return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
       'div',
-      { className: __WEBPACK_IMPORTED_MODULE_1__style___default.a.KtpField },
+      { className: __WEBPACK_IMPORTED_MODULE_2__style___default.a.KtpField },
       __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
         'header',
-        { className: __WEBPACK_IMPORTED_MODULE_1__style___default.a.KtpField_header },
+        { className: __WEBPACK_IMPORTED_MODULE_2__style___default.a.KtpField_header },
         _ref,
         _ref2
       ),
@@ -1355,95 +1452,95 @@ var KtpField = function (_Component) {
           __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
             'li',
             null,
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_3__TextInput__["a" /* default */], { title: 'Nomor Induk Kependudukan', name: 'nik', isNumeric: true, maxlength: '16', onChange: this.handleInputChange })
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_4__TextInput__["a" /* default */], { Value: this.state.nik, title: 'Nomor Induk Kependudukan', name: 'nik', isNumeric: true, maxlength: '16', onChange: this.handleInputNik })
           ),
           __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
             'li',
             null,
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_3__TextInput__["a" /* default */], { title: 'Nama Lengkap', name: 'fullName', onChange: this.handleInputChange })
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_4__TextInput__["a" /* default */], { Value: this.state.fullName, title: 'Nama Lengkap', name: 'fullName', onChange: this.handleInputChange })
           ),
           __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
             'li',
-            { className: __WEBPACK_IMPORTED_MODULE_2__style___default.a.flex },
+            { className: __WEBPACK_IMPORTED_MODULE_3__style___default.a.flex },
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
               'div',
-              { className: __WEBPACK_IMPORTED_MODULE_2__style___default.a.w_50 },
-              __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_3__TextInput__["a" /* default */], { title: 'Kota Kelahiran', name: 'bornPlace', onChange: this.handleInputChange })
+              { className: __WEBPACK_IMPORTED_MODULE_3__style___default.a.w_50 },
+              __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_4__TextInput__["a" /* default */], { Value: this.state.bornPlace, title: 'Kota Kelahiran', name: 'bornPlace', onChange: this.handleInputChange })
             ),
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
               'div',
-              { className: [__WEBPACK_IMPORTED_MODULE_2__style___default.a.flex, __WEBPACK_IMPORTED_MODULE_2__style___default.a.w_50].join(' ') },
-              __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_3__TextInput__["a" /* default */], { title: 'Tgl.Lahir', name: 'bornDay', isNumeric: true, maxlength: '2', onChange: this.handleInputChange }),
+              { className: [__WEBPACK_IMPORTED_MODULE_3__style___default.a.flex, __WEBPACK_IMPORTED_MODULE_3__style___default.a.w_50].join(' ') },
+              __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_4__TextInput__["a" /* default */], { Value: this.state.bornDay, title: 'Tgl.Lahir', name: 'bornDay', isNumeric: true, maxlength: '2', onChange: this.handleInputChange }),
               __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
                 'div',
-                { className: __WEBPACK_IMPORTED_MODULE_2__style___default.a.mh1 },
-                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_3__TextInput__["a" /* default */], { title: 'Bln.Lahir', name: 'bornMonth', isNumeric: true, maxlength: '2', onChange: this.handleInputChange })
+                { className: __WEBPACK_IMPORTED_MODULE_3__style___default.a.mh1 },
+                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_4__TextInput__["a" /* default */], { Value: this.state.bornMonth, title: 'Bln.Lahir', name: 'bornMonth', isNumeric: true, maxlength: '2', onChange: this.handleInputChange })
               ),
-              __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_3__TextInput__["a" /* default */], { title: 'Thn.lahir', name: 'bornYear', isNumeric: true, maxlength: '4', onChange: this.handleInputChange })
+              __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_4__TextInput__["a" /* default */], { Value: this.state.bornYear, title: 'Thn.lahir', name: 'bornYear', isNumeric: true, maxlength: '4', onChange: this.handleInputChange })
             )
           ),
           __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
             'li',
             null,
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_4__DropDown__["a" /* default */], { dataItems: gender, title: 'jenis Kelamin', name: 'gender', onChange: this.handleInputChange })
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_5__DropDown__["a" /* default */], { Value: this.state.gender, dataItems: gender, title: 'jenis Kelamin', name: 'gender', onChange: this.handleInputChange })
           ),
           _ref4,
           __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
             'li',
-            { className: __WEBPACK_IMPORTED_MODULE_2__style___default.a.flex },
+            { className: __WEBPACK_IMPORTED_MODULE_3__style___default.a.flex },
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
               'div',
-              { className: __WEBPACK_IMPORTED_MODULE_2__style___default.a.w_50 },
-              __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_3__TextInput__["a" /* default */], { title: 'alamat', name: 'streetAddress', onChange: this.handleInputChange })
+              { className: __WEBPACK_IMPORTED_MODULE_3__style___default.a.w_50 },
+              __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_4__TextInput__["a" /* default */], { Value: this.state.streetAddress, title: 'alamat', name: 'streetAddress', onChange: this.handleInputChange })
             ),
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
               'div',
-              { className: [__WEBPACK_IMPORTED_MODULE_2__style___default.a.flex, __WEBPACK_IMPORTED_MODULE_2__style___default.a.w_50].join(' ') },
+              { className: [__WEBPACK_IMPORTED_MODULE_3__style___default.a.flex, __WEBPACK_IMPORTED_MODULE_3__style___default.a.w_50].join(' ') },
               __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
                 'div',
-                { className: __WEBPACK_IMPORTED_MODULE_2__style___default.a.mr1 },
-                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_3__TextInput__["a" /* default */], { title: 'RT', name: 'rt', isNumeric: true, maxlength: '3', onChange: this.handleInputChange })
+                { className: __WEBPACK_IMPORTED_MODULE_3__style___default.a.mr1 },
+                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_4__TextInput__["a" /* default */], { Value: this.state.rt, title: 'RT', name: 'rt', isNumeric: true, maxlength: '3', onChange: this.handleInputChange })
               ),
-              __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_3__TextInput__["a" /* default */], { title: 'RW', name: 'rw', isNumeric: true, maxlength: '3', onChange: this.handleInputChange })
+              __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_4__TextInput__["a" /* default */], { Value: this.state.rw, title: 'RW', name: 'rw', isNumeric: true, maxlength: '3', onChange: this.handleInputChange })
             )
           ),
           __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
             'li',
-            { className: [__WEBPACK_IMPORTED_MODULE_2__style___default.a.flex] },
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_4__DropDown__["a" /* default */], { dataItems: kelurahan, title: 'jenis administrasi', name: 'kelurahanType', onChange: this.handleInputChange }),
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_3__TextInput__["a" /* default */], { title: 'Nama Desa/Kelurahan', name: 'kelurahanName', placeholder: 'contoh: Desa Bersemi Indah', onChange: this.handleInputChange })
+            { className: [__WEBPACK_IMPORTED_MODULE_3__style___default.a.flex] },
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_5__DropDown__["a" /* default */], { Value: this.state.kelurahanType, dataItems: kelurahan, title: 'jenis administrasi', name: 'kelurahanType', onChange: this.handleInputChange }),
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_4__TextInput__["a" /* default */], { Value: this.state.kelurahanName, title: 'Nama Desa/Kelurahan', name: 'kelurahanName', placeholder: 'contoh: Desa Bersemi Indah', onChange: this.handleInputChange })
           ),
           __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
             'li',
             null,
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_3__TextInput__["a" /* default */], { title: 'Kecamatan', name: 'kecamatan', onChange: this.handleInputChange })
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_4__TextInput__["a" /* default */], { Value: this.state.kecamatan, title: 'Kecamatan', name: 'kecamatan', onChange: this.handleInputChange })
           ),
           __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
             'li',
-            { className: [__WEBPACK_IMPORTED_MODULE_2__style___default.a.flex] },
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_4__DropDown__["a" /* default */], { dataItems: city, title: 'jenis administrasi', name: 'cityType', onChange: this.handleInputChange }),
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_3__TextInput__["a" /* default */], { title: 'Kota/Kabupaten', name: 'cityName', onChange: this.handleInputChange })
+            { className: [__WEBPACK_IMPORTED_MODULE_3__style___default.a.flex] },
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_5__DropDown__["a" /* default */], { Value: this.state.cityType, dataItems: city, title: 'jenis administrasi', name: 'cityType', onChange: this.handleInputChange }),
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_4__TextInput__["a" /* default */], { Value: this.state.cityName, title: 'Kota/Kabupaten', name: 'cityName', onChange: this.handleInputChange })
           ),
           _ref5,
           __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
             'li',
-            { className: [__WEBPACK_IMPORTED_MODULE_2__style___default.a.flex] },
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_4__DropDown__["a" /* default */], { dataItems: martialStatus, title: 'Status Pernikahan', name: 'martialStatus', onChange: this.handleInputChange }),
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_3__TextInput__["a" /* default */], { title: 'Pekerjaan', name: 'occupation', onChange: this.handleInputChange })
+            { className: [__WEBPACK_IMPORTED_MODULE_3__style___default.a.flex] },
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_5__DropDown__["a" /* default */], { Value: this.state.martialStatus, dataItems: martialStatus, title: 'Status Pernikahan', name: 'martialStatus', onChange: this.handleInputChange }),
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_4__TextInput__["a" /* default */], { Value: this.state.occupation, title: 'Pekerjaan', name: 'occupation', onChange: this.handleInputChange })
           ),
           _ref6
         ),
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
           'div',
-          { className: __WEBPACK_IMPORTED_MODULE_1__style___default.a.KtpField_action },
+          { className: __WEBPACK_IMPORTED_MODULE_2__style___default.a.KtpField_action },
           __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
             'button',
-            { className: __WEBPACK_IMPORTED_MODULE_1__style___default.a.KtpField_buttonCancel, onClick: this.props.cancelInput },
+            { className: __WEBPACK_IMPORTED_MODULE_2__style___default.a.KtpField_buttonCancel, onClick: this.props.cancelInput },
             'Cancel'
           ),
           __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
             'button',
-            { className: __WEBPACK_IMPORTED_MODULE_1__style___default.a.KtpField_buttonSave, onClick: this.handleSave.bind(this) },
+            { className: __WEBPACK_IMPORTED_MODULE_2__style___default.a.KtpField_buttonSave, onClick: this.handleSave.bind(this) },
             'Save'
           )
         )
@@ -1619,6 +1716,7 @@ function TextInput(props) {
 		__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])('input', { className: __WEBPACK_IMPORTED_MODULE_1__style___default.a.TextInput_input,
 			type: props.type,
 			name: props.name,
+			value: props.Value,
 			placeholder: props.placeholder,
 			maxlength: props.maxlength,
 			onChange: props.onChange,
@@ -1634,115 +1732,6 @@ function TextInput(props) {
 		)
 	);
 }
-
-/***/ }),
-
-/***/ "gNuw":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Profile; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_preact__ = __webpack_require__("KM04");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_preact___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_preact__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__style__ = __webpack_require__("Tv6c");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__style___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__style__);
-
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-
-
-
-var Profile = function (_Component) {
-	_inherits(Profile, _Component);
-
-	function Profile() {
-		var _temp, _this, _ret;
-
-		_classCallCheck(this, Profile);
-
-		for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-			args[_key] = arguments[_key];
-		}
-
-		return _ret = (_temp = (_this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this.state = {
-			time: Date.now(),
-			count: 10
-		}, _this.updateTime = function () {
-			_this.setState({ time: Date.now() });
-		}, _this.increment = function () {
-			_this.setState({ count: _this.state.count + 1 });
-		}, _temp), _possibleConstructorReturn(_this, _ret);
-	}
-
-	// gets called when this route is navigated to
-	Profile.prototype.componentDidMount = function componentDidMount() {
-		// start a timer for the clock:
-		this.timer = setInterval(this.updateTime, 1000);
-	};
-
-	// gets called just before navigating away from the route
-
-
-	Profile.prototype.componentWillUnmount = function componentWillUnmount() {
-		clearInterval(this.timer);
-	};
-
-	// update the current time
-
-
-	// Note: `user` comes from the URL, courtesy of our router
-	Profile.prototype.render = function render(_ref, _ref2) {
-		var user = _ref.user;
-		var time = _ref2.time,
-		    count = _ref2.count;
-
-		return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
-			'div',
-			{ 'class': __WEBPACK_IMPORTED_MODULE_1__style___default.a.profile },
-			__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
-				'h1',
-				null,
-				'Profile: ',
-				user
-			),
-			__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
-				'p',
-				null,
-				'This is the user profile for a user named ',
-				user,
-				'.'
-			),
-			__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
-				'div',
-				null,
-				'Current time: ',
-				new Date(time).toLocaleString()
-			),
-			__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
-				'p',
-				null,
-				__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
-					'button',
-					{ onClick: this.increment },
-					'Click Me'
-				),
-				' ',
-				'Clicked ',
-				count,
-				' times.'
-			)
-		);
-	};
-
-	return Profile;
-}(__WEBPACK_IMPORTED_MODULE_0_preact__["Component"]);
-
-
 
 /***/ }),
 
@@ -1764,7 +1753,6 @@ module.exports = {"TextInput":"TextInput__2w7dK","TextInput_title":"TextInput_ti
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_preact_router__ = __webpack_require__("/QC5");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__header__ = __webpack_require__("sIAo");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__routes_home__ = __webpack_require__("E1C8");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__routes_profile__ = __webpack_require__("gNuw");
 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1778,17 +1766,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
-
+// import Profile from '../routes/profile';
 // import Home from 'async!./home';
 // import Profile from 'async!./profile';
 
 var _ref = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_2__header__["a" /* default */], null);
 
 var _ref2 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_3__routes_home__["a" /* default */], { path: '/ktp/' });
-
-var _ref3 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_4__routes_profile__["a" /* default */], { path: '/ktp/profile/', user: 'me' });
-
-var _ref4 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_4__routes_profile__["a" /* default */], { path: '/ktp/profile/:user' });
 
 var App = function (_Component) {
 	_inherits(App, _Component);
@@ -1820,9 +1804,7 @@ var App = function (_Component) {
 			__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
 				__WEBPACK_IMPORTED_MODULE_1_preact_router__["Router"],
 				{ onChange: this.handleRoute },
-				_ref2,
-				_ref3,
-				_ref4
+				_ref2
 			)
 		);
 	};
@@ -1846,7 +1828,7 @@ function numToWord(s) {
 
     s = s.toString();
     s = s.replace(/[, ]/g, '');
-    if (s != parseFloat(s)) return 'not a number';
+    if (s != parseFloat(s)) return 'XXXX';
 
     // handle koma
     var x = s.indexOf(',');
@@ -1941,26 +1923,7 @@ var Header = function (_Component) {
 		return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
 			'header',
 			{ 'class': __WEBPACK_IMPORTED_MODULE_2__style___default.a.header },
-			_ref,
-			__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
-				'nav',
-				null,
-				__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
-					__WEBPACK_IMPORTED_MODULE_1_preact_router_match__["Link"],
-					{ activeClassName: __WEBPACK_IMPORTED_MODULE_2__style___default.a.active, href: '/ktp' },
-					'Home'
-				),
-				__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
-					__WEBPACK_IMPORTED_MODULE_1_preact_router_match__["Link"],
-					{ activeClassName: __WEBPACK_IMPORTED_MODULE_2__style___default.a.active, href: '/ktp/profile' },
-					'Me'
-				),
-				__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
-					__WEBPACK_IMPORTED_MODULE_1_preact_router_match__["Link"],
-					{ activeClassName: __WEBPACK_IMPORTED_MODULE_2__style___default.a.active, href: '/ktp/profile/john' },
-					'John'
-				)
-			)
+			_ref
 		);
 	};
 
