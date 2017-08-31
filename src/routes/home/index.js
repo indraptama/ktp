@@ -19,7 +19,7 @@ export default class Home extends Component {
 	}
 
 	handleSaveData(data) {
-		let dataKtps = { ...this.props.store.dataKtp };
+		const dataKtps = { ...this.props.store.dataKtp };
 		this.props.store.addNewKtp(data);
 		this.setState({
 			modalOpen: false,
@@ -53,7 +53,7 @@ export default class Home extends Component {
 			<div className={style.home}>
 				<div style="display:flex">
 						<div style={"width:50%"}>
-							<ButtonFab onClick={this.modalOpen.bind(this)} />
+							<ButtonFab onClick={this.modalOpen.bind(this)}><i class="material-icons md-24">add</i></ButtonFab>
 						</div>
 						<div style={"width:50%"}>
 							<div style="display:flex;flex-wrap:wrap">
