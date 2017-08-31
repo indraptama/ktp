@@ -1,6 +1,5 @@
 import { h, Component } from 'preact';
-import { observable } from 'mobx';
-import { observer } from 'mobx-react';
+
 
 // import Library
 import nikParser from '../../library/nikparser.js';
@@ -13,7 +12,7 @@ import gstyle from '../_style';
 import TextInput from '../TextInput';
 import DropDown from '../DropDown';
 
-@observer class KtpField extends Component {
+export default class KtpField extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -237,5 +236,3 @@ const martialStatus = [
     value: 'widowed'
   }
 ]
-
-export default KtpField;
