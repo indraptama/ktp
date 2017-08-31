@@ -1,5 +1,5 @@
 import { h, Component } from 'preact';
-import { observable } from 'mobx'; 
+import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 
 // import Library
@@ -36,7 +36,6 @@ import DropDown from '../DropDown';
       martialStatus: this.props.defaultData.martialStatus,
       occupation: this.props.defaultData.occupation,
     }
-
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleInputNik = this.handleInputNik.bind(this);
   }
