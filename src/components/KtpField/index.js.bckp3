@@ -16,7 +16,7 @@ export default class KtpField extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      _index: this.props.defaultData._index,
+      _index: this.props.index,
       _id:  this.props.defaultData._id,
       nik:  this.props.defaultData.nik,
       fullName: this.props.defaultData.fullName,
@@ -44,7 +44,7 @@ export default class KtpField extends Component {
   handleSave(e) {
     e.preventDefault();
     let dataKTP = {
-      _index: this.state._index,
+      _index: this.props.index,
       _id: this.state.nik,
       nik: this.state.nik,
       fullName: this.state.fullName,
@@ -68,7 +68,7 @@ export default class KtpField extends Component {
 
     // Reset State to initial Value
     this.setState({
-      _index: this.props.defaultData._index,
+      _index: this.props.index,
       _id:  this.props.defaultData._id,
       nik:  this.props.defaultData.nik,
       fullName: this.props.defaultData.fullName,
@@ -119,30 +119,6 @@ export default class KtpField extends Component {
       }
     }
     NikResult(Value);
-  }
-
-  componentWillReceiveProps(newProps) {
-    this.setState({
-      _index: newProps.defaultData._index,
-      _id:  newProps.defaultData._id,
-      nik:  newProps.defaultData.nik,
-      fullName: newProps.defaultData.fullName,
-      bornPlace: newProps.defaultData.bornPlace,
-      bornDay: newProps.defaultData.bornDay,
-      bornMonth: newProps.defaultData.bornMonth,
-      bornYear: newProps.defaultData.bornYear,
-      gender: newProps.defaultData.gender,
-      streetAddress: newProps.defaultData.streetAddress,
-      rt: newProps.defaultData.rt,
-      rw: newProps.defaultData.rw,
-      kelurahanType: newProps.defaultData.kelurahanType,
-      kelurahanName: newProps.defaultData.kelurahanName,
-      kecamatan: newProps.defaultData.kecamatan,
-      cityType: newProps.defaultData.cityType,
-      cityName: newProps.defaultData.cityName,
-      martialStatus: newProps.defaultData.martialStatus,
-      occupation: newProps.defaultData.occupation,
-    })
   }
 
   render() {

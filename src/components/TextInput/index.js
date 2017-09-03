@@ -34,6 +34,7 @@ export default function TextInput(props) {
         			type={props.type}
               name={props.name}
               value={props.Value}
+              defaultValue={props.defValue}
               placeholder={props.placeholder}
               maxlength={props.maxlength}
         			onChange={props.onChange}

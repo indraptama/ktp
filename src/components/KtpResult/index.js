@@ -44,13 +44,16 @@ function KtpResult(props) {
 
 	return (
 		<div className={style.result}>
-			<p>
+			<p style={Style.result_p}>
 				{`${personTitle} ${fullNameUpperCase}, lahir di ${templateSource.bornPlace} pada tanggal ${templateSource.bornDate} (${bornDateWord}). ${templateSource.occupation}. Pemegang Kartu Tanda Penduduk dengan Nomor Induk Kependudukan (NIK) ${templateSource.nik}. Bertempat tinggal di ${templateSource.cityType} ${templateSource.cityName}, ${templateSource.streetAddress}, Rukun Tetangga ${templateSource.rt}, Rukun Warga ${templateSource.rw}, ${templateSource.kelurahanType} ${templateSource.kelurahanName}, Kecamatan  ${templateSource.kecamatan}. Warga Negara Indonesia.`}
 				{notarisLocation('bandung', templateSource.cityName)}
 			</p>
       <div className={style.resultAction}>
+        <a href="#" onClick={() => props.removeButton(props.index)}>
+          <i class="material-icons">clear</i>
+        </a>
         <a href="#" onClick={() => props.editButton(props.index)}>
-          <img src="assets/icons/edit.svg" alt=""/>
+          <i class="material-icons">edit</i>
         </a>
       </div>
 		</div>
@@ -65,6 +68,13 @@ function getTitle(gender, martialStatus) {
 		return 'Nona';
 	}
 	return 'Nyonya';
+}
+
+const Style = {
+  result_p: {
+    lineHeight: "1.5",
+    fontFamily: '"courier new", courier, monospaced',
+  }
 }
 
 export default KtpResult;

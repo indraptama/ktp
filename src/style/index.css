@@ -5,16 +5,8 @@
 }
 
 html {
-	font-family: sans-serif;
+	font-family: 'Roboto';
 	font-size: 100%;
   background-color: #f3f3f3;
-}
-
-
-.genderBgMale {
-  background-color: #2196F3;
-}
-
-.genderBgFemale {
-  background-color: #E91E63;
+  color: #444;
 }

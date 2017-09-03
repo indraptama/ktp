@@ -1,0 +1,55 @@
+import { observable, computed } from 'mobx'
+
+class KTP {
+  @observable _idx
+  @observable nik
+  @observable fullName
+  @observable bornPlace
+  @observable bornDay
+  @observable bornMonth
+  @observable bornYear
+  @observable gender
+  @observable streetAddress
+  @observable rt
+  @observable rw
+  @observable kelurahanType
+  @observable kelurahanName
+  @observable kecamatan
+  @observable cityType
+  @observable cityName
+  @observable martialStatus
+  @observable occupation
+
+  constructor(value) {
+    this._idx = Date.now()
+    this.nik = value.nik
+    this.fullName = value.fullName
+    this.bornPlace = value.bornPlace
+    this.bornDay = value.bornDay
+    this.bornMonth = value.bornMonth
+    this.bornYear = value.bornYear
+    this.gender = value.gender
+    this.streetAddress = value.streetAddress
+    this.rt = value.rt
+    this.rw = value.rw
+    this.kelurahanType = value.kelurahanType
+    this.kelurahanName = value.kelurahanName
+    this.kecamatan = value.kecamatan
+    this.cityType = value.cityType
+    this.cityName = value.cityName
+    this.martialStatus = value.martialStatus
+    this.occupation = value.occupation
+  }
+}
+
+class KtpStore {
+  @observable KTPS = [];
+
+  addNewKtp(value) {
+    this.KTPS.push(new KTP(value));
+  }
+
+}
+
+
+export default new KtpStore;

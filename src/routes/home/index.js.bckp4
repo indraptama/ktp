@@ -1,0 +1,142 @@
+import {h, Component } from 'preact';
+import style from './style';
+import { observer } from 'mobx-react';
+
+// PouchDB
+// import addToDataBase from '../../store/database';
+
+// import Components
+import UserCard from '../../components/UserCard';
+import KtpField from '../../components/KtpField';
+import Modal from '../../components/Modal';
+import ButtonFab from '../../components/ButtonFab';
+import KtpResult, { updateKtp } from '../../components/KtpResult';
+
+@observer
+export default class Home extends Component {
+	constructor(props) {
+	  super(props);
+	  this.state = {
+			modalOpen: false,
+      modalUpdateOpen: false,
+      editKtp: defaultDataKtp,
+		}
+	}
+
+  // Add New KTP
+	handleSaveData(data) {
+		this.props.store.addNewKtp(data);
+		this.setState({
+			modalOpen: false,
+		})
+	}
+
+	modalOpen(e) {
+		e.preventDefault();
+		this.setState({
+			modalOpen: true,
+		})
+	}
+
+	modalClose(e) {
+		e.preventDefault();
+		this.setState({
+			modalOpen: false,
+		})
+	}
+
+  // Update or Update KTP
+  handleUpdateData(data) {
+		this.setState({
+			modalUpdateOpen: false,
+		})
+	}
+
+  modalUpdateOpen(idx) {
+    const dataKtp = this.props.store.dataKtp;
+    this.setState({
+      editKtp: idx,
+      modalUpdateOpen: true,
+		})
+	}
+
+	modalUpdateClose(e) {
+		e.preventDefault();
+		this.setState({
+      editKtp: defaultDataKtp,
+			modalUpdateOpen: false,
+		})
+	}
+
+
+
+
+	render(){
+		const { dataKtp } = this.props.store;
+		const Cards = Object.keys(dataKtp).map(key => {
+			return (
+				<UserCard nik={ dataKtp[key].nik }
+						gender={ dataKtp[key].gender }
+						fullName={ dataKtp[key].fullName } />
+			)
+		})
+
+    const Komparisi = Object.keys(dataKtp).map(key => {
+			return (
+        <div>
+          <KtpResult dataKTP={dataKtp[key]} editButton={this.modalUpdateOpen.bind(this)} index={key}/>
+
+        </div>
+			)
+		})
+
+		return (
+			<div className={style.home}>
+				<div style="display:flex;min-height: 100vh;">
+						<div style={"width:50%"}>
+              <div style="display:flex;flex-wrap:wrap">
+                { Cards }
+							</div>
+              <ButtonFab onClick={this.modalOpen.bind(this)}><i class="material-icons md-24">add</i></ButtonFab>
+						</div>
+						<div style={"width:50%;background-color:#fff"}>
+              { Komparisi }
+						</div>
+				</div>
+
+				<Modal isActive={this.state.modalOpen}>
+					<KtpField outputData={this.handleSaveData.bind(this)} cancelInput={this.modalClose.bind(this)} defaultData={defaultDataKtp}/>
+				</Modal>
+        <Modal isActive={this.state.modalUpdateOpen}>
+          {this.state.editKtp}
+          <KtpField outputData={this.handleUpdateData.bind(this)} cancelInput={this.modalUpdateClose.bind(this)} defaultData={this.state.editKtp}/>
+        </Modal>
+
+
+
+
+			</div>
+		)
+	}
+}
+
+const defaultDataKtp = {
+  _id: "",
+  nik: "",
+  fullName: "",
+  bornPlace: "",
+  bornDay: "",
+  bornMonth: "",
+  bornYear: "",
+  gender: "female",
+  streetAddress: "",
+  rt: "",
+  rw: "",
+  kelurahanType: "desa",
+  kelurahanName: "",
+  kecamatan: "",
+  cityType: "kabupaten",
+  cityName: "",
+  martialStatus: "single",
+  occupation: "",
+}
