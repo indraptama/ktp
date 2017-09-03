@@ -5012,14 +5012,14 @@ var Home = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6_mobx_react__["obser
   };
 
   Home.prototype.modalOpen = function modalOpen(e) {
-    e.preventDefault;
+    e.preventDefault();
     this.setState({
       openModal: true
     });
   };
 
   Home.prototype.modalClose = function modalClose(e) {
-    e.preventDefault;
+    e.preventDefault();
     this.setState({
       openModal: false,
       defaultKtp: defaultDataKtp
@@ -5879,6 +5879,9 @@ var KtpField = function (_Component) {
       fullName: this.state.fullName,
       bornPlace: this.state.bornPlace,
       bornDate: this.state.bornDay + '-' + this.state.bornMonth + '-' + this.state.bornYear,
+      bornDay: this.state.bornDay,
+      bornMonth: this.state.bornMonth,
+      bornYear: this.state.bornYear,
       gender: this.state.gender,
       streetAddress: this.state.streetAddress,
       rt: this.state.rt,
@@ -5901,7 +5904,7 @@ var KtpField = function (_Component) {
       nik: this.props.defaultData.nik,
       fullName: this.props.defaultData.fullName,
       bornPlace: this.props.defaultData.bornPlace,
-      bornDay: this.props.defaultData.bornDay,
+      bornDay: this.props.defaultData.bornDate,
       bornMonth: this.props.defaultData.bornMonth,
       bornYear: this.props.defaultData.bornYear,
       gender: this.props.defaultData.gender,
@@ -7124,7 +7127,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var _ref = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
 	'h1',
 	null,
-	'Komparisi Generator'
+	'KTP to Komparisi'
 );
 
 var Header = function (_Component) {

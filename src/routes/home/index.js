@@ -48,14 +48,14 @@ export default class Home extends Component {
   }
 
   modalOpen(e) {
-    e.preventDefault;
+    e.preventDefault();
     this.setState({
       openModal: true,
     })
   }
 
   modalClose(e) {
-    e.preventDefault;
+    e.preventDefault();
     this.setState({
       openModal: false,
       defaultKtp: defaultDataKtp,

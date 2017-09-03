@@ -6,7 +6,7 @@ export default class Header extends Component {
 	render() {
 		return (
 			<header class={style.header}>
-				<h1>Komparisi Generator</h1>
+				<h1>KTP to Komparisi</h1>
 
 			</header>
 		);
